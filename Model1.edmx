@@ -1,0 +1,459 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище Model" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6013: Первичный ключ в таблице или представлении "43П-МДК.01.01-Канаев.dbo.UsersPhoto" не определен, его не удалось вывести. Эта таблица или представление исключены. Чтобы использовать сущность, необходимо проверить схему, добавить правильные ключи и раскомментировать ее.
+        <EntityType Name="UsersPhoto">
+          <Property Name="idПользователь" Type="int" />
+          <Property Name="PhotoPath" Type="text" />
+          <Property Name="PhotoBinary" Type="binary" MaxLength="50" />
+        </EntityType>-->
+        <EntityType Name="Классы">
+          <Key>
+            <PropertyRef Name="idкласс" />
+          </Key>
+          <Property Name="idкласс" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Класс" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Пол">
+          <Key>
+            <PropertyRef Name="idпол" />
+          </Key>
+          <Property Name="idпол" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Пол" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Пользователи">
+          <Key>
+            <PropertyRef Name="idпользователь" />
+          </Key>
+          <Property Name="idпользователь" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Имя" Type="nvarchar" MaxLength="10" />
+          <Property Name="Фамилия" Type="nvarchar" MaxLength="10" />
+          <Property Name="Пол" Type="int" />
+          <Property Name="Логин" Type="nvarchar" MaxLength="10" />
+          <Property Name="Пароль" Type="int" />
+          <Property Name="Роль" Type="int" />
+        </EntityType>
+        <EntityType Name="Роли">
+          <Key>
+            <PropertyRef Name="idроль" />
+          </Key>
+          <Property Name="idроль" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Роль" Type="nchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="Ученики">
+          <Key>
+            <PropertyRef Name="idученик" />
+          </Key>
+          <Property Name="idученик" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Имя" Type="nvarchar" MaxLength="10" />
+          <Property Name="Фамилия" Type="nvarchar" MaxLength="10" />
+          <Property Name="Класс" Type="int" />
+          <Property Name="Форма" Type="int" />
+          <Property Name="ОценкаРусский" Type="int" Nullable="false" />
+          <Property Name="ОценкаМатематика" Type="int" Nullable="false" />
+          <Property Name="ОценкаФизика" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Форма">
+          <Key>
+            <PropertyRef Name="idформа" />
+          </Key>
+          <Property Name="idформа" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ФормаОбучения" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="ФотоПользователи">
+          <Key>
+            <PropertyRef Name="idпользователь" />
+          </Key>
+          <Property Name="idпользователь" Type="int" Nullable="false" />
+          <Property Name="PhotoPath" Type="nvarchar" MaxLength="100" />
+          <Property Name="PhotoBinary" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Пользователи_Пол">
+          <End Role="Пол" Type="Self.Пол" Multiplicity="0..1" />
+          <End Role="Пользователи" Type="Self.Пользователи" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Пол">
+              <PropertyRef Name="idпол" />
+            </Principal>
+            <Dependent Role="Пользователи">
+              <PropertyRef Name="Пол" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Пользователи_Роли">
+          <End Role="Роли" Type="Self.Роли" Multiplicity="0..1" />
+          <End Role="Пользователи" Type="Self.Пользователи" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Роли">
+              <PropertyRef Name="idроль" />
+            </Principal>
+            <Dependent Role="Пользователи">
+              <PropertyRef Name="Роль" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ученики_Классы">
+          <End Role="Классы" Type="Self.Классы" Multiplicity="0..1" />
+          <End Role="Ученики" Type="Self.Ученики" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Классы">
+              <PropertyRef Name="idкласс" />
+            </Principal>
+            <Dependent Role="Ученики">
+              <PropertyRef Name="Класс" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ученики_Форма">
+          <End Role="Форма" Type="Self.Форма" Multiplicity="0..1" />
+          <End Role="Ученики" Type="Self.Ученики" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Форма">
+              <PropertyRef Name="idформа" />
+            </Principal>
+            <Dependent Role="Ученики">
+              <PropertyRef Name="Форма" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ФотоПользователи_Пользователи">
+          <End Role="Пользователи" Type="Self.Пользователи" Multiplicity="1" />
+          <End Role="ФотоПользователи" Type="Self.ФотоПользователи" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Пользователи">
+              <PropertyRef Name="idпользователь" />
+            </Principal>
+            <Dependent Role="ФотоПользователи">
+              <PropertyRef Name="idпользователь" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище ModelContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Классы" EntityType="Self.Классы" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Пол" EntityType="Self.Пол" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Пользователи" EntityType="Self.Пользователи" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Роли" EntityType="Self.Роли" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ученики" EntityType="Self.Ученики" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Форма" EntityType="Self.Форма" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ФотоПользователи" EntityType="Self.ФотоПользователи" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Пользователи_Пол" Association="Self.FK_Пользователи_Пол">
+            <End Role="Пол" EntitySet="Пол" />
+            <End Role="Пользователи" EntitySet="Пользователи" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Пользователи_Роли" Association="Self.FK_Пользователи_Роли">
+            <End Role="Роли" EntitySet="Роли" />
+            <End Role="Пользователи" EntitySet="Пользователи" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ученики_Классы" Association="Self.FK_Ученики_Классы">
+            <End Role="Классы" EntitySet="Классы" />
+            <End Role="Ученики" EntitySet="Ученики" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ученики_Форма" Association="Self.FK_Ученики_Форма">
+            <End Role="Форма" EntitySet="Форма" />
+            <End Role="Ученики" EntitySet="Ученики" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ФотоПользователи_Пользователи" Association="Self.FK_ФотоПользователи_Пользователи">
+            <End Role="Пользователи" EntitySet="Пользователи" />
+            <End Role="ФотоПользователи" EntitySet="ФотоПользователи" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="KanaevEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="Model.sysdiagrams" />
+          <EntitySet Name="Классы" EntityType="Model.Классы" />
+          <EntitySet Name="Пол" EntityType="Model.Пол" />
+          <EntitySet Name="Пользователи" EntityType="Model.Пользователи" />
+          <EntitySet Name="Роли" EntityType="Model.Роли" />
+          <EntitySet Name="Ученики" EntityType="Model.Ученики" />
+          <EntitySet Name="Форма" EntityType="Model.Форма" />
+          <EntitySet Name="ФотоПользователи" EntityType="Model.ФотоПользователи" />
+          <AssociationSet Name="FK_Ученики_Классы" Association="Model.FK_Ученики_Классы">
+            <End Role="Классы" EntitySet="Классы" />
+            <End Role="Ученики" EntitySet="Ученики" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Пользователи_Пол" Association="Model.FK_Пользователи_Пол">
+            <End Role="Пол" EntitySet="Пол" />
+            <End Role="Пользователи" EntitySet="Пользователи" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Пользователи_Роли" Association="Model.FK_Пользователи_Роли">
+            <End Role="Роли" EntitySet="Роли" />
+            <End Role="Пользователи" EntitySet="Пользователи" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ФотоПользователи_Пользователи" Association="Model.FK_ФотоПользователи_Пользователи">
+            <End Role="Пользователи" EntitySet="Пользователи" />
+            <End Role="ФотоПользователи" EntitySet="ФотоПользователи" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ученики_Форма" Association="Model.FK_Ученики_Форма">
+            <End Role="Форма" EntitySet="Форма" />
+            <End Role="Ученики" EntitySet="Ученики" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Классы">
+          <Key>
+            <PropertyRef Name="idкласс" />
+          </Key>
+          <Property Name="idкласс" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Класс" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Ученики" Relationship="Model.FK_Ученики_Классы" FromRole="Классы" ToRole="Ученики" />
+        </EntityType>
+        <EntityType Name="Пол">
+          <Key>
+            <PropertyRef Name="idпол" />
+          </Key>
+          <Property Name="idпол" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Пол1" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Пользователи" Relationship="Model.FK_Пользователи_Пол" FromRole="Пол" ToRole="Пользователи" />
+        </EntityType>
+        <EntityType Name="Пользователи">
+          <Key>
+            <PropertyRef Name="idпользователь" />
+          </Key>
+          <Property Name="idпользователь" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Имя" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Фамилия" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Пол" Type="Int32" />
+          <Property Name="Логин" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Пароль" Type="Int32" />
+          <Property Name="Роль" Type="Int32" />
+          <NavigationProperty Name="Пол1" Relationship="Model.FK_Пользователи_Пол" FromRole="Пользователи" ToRole="Пол" />
+          <NavigationProperty Name="Роли" Relationship="Model.FK_Пользователи_Роли" FromRole="Пользователи" ToRole="Роли" />
+          <NavigationProperty Name="ФотоПользователи" Relationship="Model.FK_ФотоПользователи_Пользователи" FromRole="Пользователи" ToRole="ФотоПользователи" />
+        </EntityType>
+        <EntityType Name="Роли">
+          <Key>
+            <PropertyRef Name="idроль" />
+          </Key>
+          <Property Name="idроль" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Роль" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Пользователи" Relationship="Model.FK_Пользователи_Роли" FromRole="Роли" ToRole="Пользователи" />
+        </EntityType>
+        <EntityType Name="Ученики">
+          <Key>
+            <PropertyRef Name="idученик" />
+          </Key>
+          <Property Name="idученик" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Имя" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Фамилия" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Класс" Type="Int32" />
+          <Property Name="Форма" Type="Int32" />
+          <Property Name="ОценкаРусский" Type="Int32" Nullable="false" />
+          <Property Name="ОценкаМатематика" Type="Int32" Nullable="false" />
+          <Property Name="ОценкаФизика" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Классы" Relationship="Model.FK_Ученики_Классы" FromRole="Ученики" ToRole="Классы" />
+          <NavigationProperty Name="Форма1" Relationship="Model.FK_Ученики_Форма" FromRole="Ученики" ToRole="Форма" />
+        </EntityType>
+        <EntityType Name="Форма">
+          <Key>
+            <PropertyRef Name="idформа" />
+          </Key>
+          <Property Name="idформа" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ФормаОбучения" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Ученики" Relationship="Model.FK_Ученики_Форма" FromRole="Форма" ToRole="Ученики" />
+        </EntityType>
+        <EntityType Name="ФотоПользователи">
+          <Key>
+            <PropertyRef Name="idпользователь" />
+          </Key>
+          <Property Name="idпользователь" Type="Int32" Nullable="false" />
+          <Property Name="PhotoPath" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PhotoBinary" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Пользователи" Relationship="Model.FK_ФотоПользователи_Пользователи" FromRole="ФотоПользователи" ToRole="Пользователи" />
+        </EntityType>
+        <Association Name="FK_Ученики_Классы">
+          <End Type="Model.Классы" Role="Классы" Multiplicity="0..1" />
+          <End Type="Model.Ученики" Role="Ученики" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Классы">
+              <PropertyRef Name="idкласс" />
+            </Principal>
+            <Dependent Role="Ученики">
+              <PropertyRef Name="Класс" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Пользователи_Пол">
+          <End Type="Model.Пол" Role="Пол" Multiplicity="0..1" />
+          <End Type="Model.Пользователи" Role="Пользователи" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Пол">
+              <PropertyRef Name="idпол" />
+            </Principal>
+            <Dependent Role="Пользователи">
+              <PropertyRef Name="Пол" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Пользователи_Роли">
+          <End Type="Model.Роли" Role="Роли" Multiplicity="0..1" />
+          <End Type="Model.Пользователи" Role="Пользователи" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Роли">
+              <PropertyRef Name="idроль" />
+            </Principal>
+            <Dependent Role="Пользователи">
+              <PropertyRef Name="Роль" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ФотоПользователи_Пользователи">
+          <End Type="Model.Пользователи" Role="Пользователи" Multiplicity="1" />
+          <End Type="Model.ФотоПользователи" Role="ФотоПользователи" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Пользователи">
+              <PropertyRef Name="idпользователь" />
+            </Principal>
+            <Dependent Role="ФотоПользователи">
+              <PropertyRef Name="idпользователь" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ученики_Форма">
+          <End Type="Model.Форма" Role="Форма" Multiplicity="0..1" />
+          <End Type="Model.Ученики" Role="Ученики" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Форма">
+              <PropertyRef Name="idформа" />
+            </Principal>
+            <Dependent Role="Ученики">
+              <PropertyRef Name="Форма" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище ModelContainer" CdmEntityContainer="KanaevEntities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Model.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Классы">
+            <EntityTypeMapping TypeName="Model.Классы">
+              <MappingFragment StoreEntitySet="Классы">
+                <ScalarProperty Name="Класс" ColumnName="Класс" />
+                <ScalarProperty Name="idкласс" ColumnName="idкласс" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Пол">
+            <EntityTypeMapping TypeName="Model.Пол">
+              <MappingFragment StoreEntitySet="Пол">
+                <ScalarProperty Name="Пол1" ColumnName="Пол" />
+                <ScalarProperty Name="idпол" ColumnName="idпол" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Пользователи">
+            <EntityTypeMapping TypeName="Model.Пользователи">
+              <MappingFragment StoreEntitySet="Пользователи">
+                <ScalarProperty Name="Роль" ColumnName="Роль" />
+                <ScalarProperty Name="Пароль" ColumnName="Пароль" />
+                <ScalarProperty Name="Логин" ColumnName="Логин" />
+                <ScalarProperty Name="Пол" ColumnName="Пол" />
+                <ScalarProperty Name="Фамилия" ColumnName="Фамилия" />
+                <ScalarProperty Name="Имя" ColumnName="Имя" />
+                <ScalarProperty Name="idпользователь" ColumnName="idпользователь" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Роли">
+            <EntityTypeMapping TypeName="Model.Роли">
+              <MappingFragment StoreEntitySet="Роли">
+                <ScalarProperty Name="Роль" ColumnName="Роль" />
+                <ScalarProperty Name="idроль" ColumnName="idроль" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ученики">
+            <EntityTypeMapping TypeName="Model.Ученики">
+              <MappingFragment StoreEntitySet="Ученики">
+                <ScalarProperty Name="ОценкаФизика" ColumnName="ОценкаФизика" />
+                <ScalarProperty Name="ОценкаМатематика" ColumnName="ОценкаМатематика" />
+                <ScalarProperty Name="ОценкаРусский" ColumnName="ОценкаРусский" />
+                <ScalarProperty Name="Форма" ColumnName="Форма" />
+                <ScalarProperty Name="Класс" ColumnName="Класс" />
+                <ScalarProperty Name="Фамилия" ColumnName="Фамилия" />
+                <ScalarProperty Name="Имя" ColumnName="Имя" />
+                <ScalarProperty Name="idученик" ColumnName="idученик" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Форма">
+            <EntityTypeMapping TypeName="Model.Форма">
+              <MappingFragment StoreEntitySet="Форма">
+                <ScalarProperty Name="ФормаОбучения" ColumnName="ФормаОбучения" />
+                <ScalarProperty Name="idформа" ColumnName="idформа" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ФотоПользователи">
+            <EntityTypeMapping TypeName="Model.ФотоПользователи">
+              <MappingFragment StoreEntitySet="ФотоПользователи">
+                <ScalarProperty Name="PhotoBinary" ColumnName="PhotoBinary" />
+                <ScalarProperty Name="PhotoPath" ColumnName="PhotoPath" />
+                <ScalarProperty Name="idпользователь" ColumnName="idпользователь" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

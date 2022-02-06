@@ -1,0 +1,28 @@
+﻿<Page x:Class="_91011rabota.Kabinet"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:_91011rabota"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Kabinet">
+
+    <Grid>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel>
+                <Image Name="UserPhotoImage" Width="100" Height="100" VerticalAlignment="Top" Margin="10" Source="Resources\NoPhoto.png"/>
+                <Button Name="IzmFoto" Click="IzmFoto_Click">Изменить фото</Button>
+            </StackPanel>
+            <StackPanel Margin="10">
+                <TextBlock Text="Имя"/>
+                <TextBlock Name="UserName"></TextBlock>
+                <TextBlock Text="Фамилия"/>
+                <TextBlock Name="UserFam"></TextBlock>
+                <Button Name="IzmImFam" Margin="0,10,0,0" Click="IzmImFam_Click">Изменить имя и фамилию</Button>
+                <Button Name="IzmLogPar" Margin="0,10,0,0" Click="IzmLogPar_Click">Изменить логин и пароль</Button>
+                <Button Name="Vihod" Margin="0,10,0,0" Click="Vihod_Click">Выход</Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>
